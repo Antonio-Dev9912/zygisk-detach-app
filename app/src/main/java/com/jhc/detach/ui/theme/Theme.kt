@@ -18,23 +18,17 @@ import androidx.core.view.WindowCompat
 private val DarkColorScheme = darkColorScheme(
         primary = Purple80,
         secondary = PurpleGrey80,
-        tertiary = Pink80
+    tertiary = Pink80,
+    background = DarkBackground,
+    surface = DarkBackground
 )
 
 private val LightColorScheme = lightColorScheme(
         primary = Purple40,
         secondary = PurpleGrey40,
-        tertiary = Pink40
-
-        /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    tertiary = Pink40,
+    background = LightBackground,
+    surface = LightBackground
 )
 
 @Composable
@@ -47,7 +41,17 @@ fun ZygiskdetachTheme(
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            if (darkTheme) {
+                dynamicDarkColorScheme(context).copy(
+                    background = DarkBackground,
+                    surface = DarkBackground
+                )
+            } else {
+                dynamicLightColorScheme(context).copy(
+                    background = LightBackground,
+                    surface = LightBackground
+                )
+            }
         }
 
         darkTheme -> DarkColorScheme
@@ -57,8 +61,13 @@ fun ZygiskdetachTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            val backgroundColor = colorScheme.background.toArgb()
+            window.statusBarColor = backgroundColor
+            window.navigationBarColor = backgroundColor
+            WindowCompat.getInsetsController(window, view).apply {
+                isAppearanceLightStatusBars = !darkTheme
+                isAppearanceLightNavigationBars = !darkTheme
+            }
         }
     }
 

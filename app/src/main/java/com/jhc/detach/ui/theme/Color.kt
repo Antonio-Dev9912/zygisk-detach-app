@@ -2,6 +2,9 @@ package com.jhc.detach.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+val DarkBackground = Color(0xFF121318)
+val LightBackground = Color(0xFFFFFFFF)
+
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)
 val Pink80 = Color(0xFFEFB8C8)
