@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -190,6 +191,23 @@ fun AppsFilterBar(selectedFilter: AppFilter, onFilterSelected: (AppFilter) -> Un
                             else -> Color(0xFFE2E2E9)
                         },
                         shape = chipShape
+                    )
+                    .then(
+                        if (isSelected) {
+                            Modifier
+                        } else {
+                            Modifier.border(
+                                BorderStroke(
+                                    width = 1.dp,
+                                    color = if (darkTheme) {
+                                        Color.White.copy(alpha = 0.2f)
+                                    } else {
+                                        Color.Black.copy(alpha = 0.15f)
+                                    }
+                                ),
+                                shape = chipShape
+                            )
+                        }
                     )
                     .clickable { onFilterSelected(filter) },
                 contentAlignment = Alignment.Center
