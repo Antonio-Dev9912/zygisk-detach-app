@@ -1,6 +1,15 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.plugin.compose")
+}
+
+val releaseSigningProperties = Properties().apply {
+    val propertiesFile = rootProject.file("local.properties")
+    if (propertiesFile.exists()) {
+        propertiesFile.inputStream().use { load(it) }
+    }
 }
 
 android {
@@ -19,6 +28,16 @@ android {
             useSupportLibrary = true
         }
     }
+    signingConfigs {
+        create("release") {
+            storeFile = rootProject.file(
+                releaseSigningProperties.getProperty("release.storeFile", "release.keystore")
+            )
+            storePassword = releaseSigningProperties.getProperty("release.storePassword")
+            keyAlias = releaseSigningProperties.getProperty("release.keyAlias")
+            keyPassword = releaseSigningProperties.getProperty("release.keyPassword")
+        }
+    }
     buildTypes {
         release {
             isMinifyEnabled = true
@@ -26,7 +45,7 @@ android {
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 

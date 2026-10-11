@@ -10,3 +10,5 @@
 local.properties
 /gradle
 /zygisk-detach-app-debug.apk
+/zygisk-detach-app-release.apk
+/release.keystore
